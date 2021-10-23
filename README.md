@@ -1,19 +1,27 @@
-CocoaPods on M1 (Apple Silicon) fails with ffi wrong architecture
+# CocoaPods on M1 (Apple Silicon) fails with ffi wrong architecture
+<pre ">
 
-I've tried the following link:
+When I tried to run 'pod install' on the M1 MacBook, I got the following error messages:
+
+LoadError - dlopen(/opt/homebrew/lib/ruby/gems/3.0.0/gems/ffi-1.15.0/lib/ffi_c.bundle, 9): no suitable image found.  Did find:
+    /opt/homebrew/lib/ruby/gems/3.0.0/gems/ffi-1.15.0/lib/ffi_c.bundle: mach-o, but wrong architecture
+    /opt/homebrew/lib/ruby/gems/3.0.0/gems/ffi-1.15.0/lib/ffi_c.bundle: mach-o, but wrong architecture - /opt/homebrew/lib/ruby/gems/3.0.0/gems/ffi-1.15.0/lib/ffi_c.bundle
+
+Searching for this error, I found some answers on the stackoverflow website,  which you can check on the following link:
 
 https://stackoverflow.com/questions/66644365/cocoapods-on-m1-apple-silicon-fails-with-ffi-wrong-architecture
 
-I've tested Datasun's, Burtsevyg and Rhys Broughton answers, but it still didn't work for me. 
+I've tested Datasun's, Burtsevyg and Rhys Broughton answers, but it still didn't work for me.
 
 Then I tried to mix all and did the following:
 
-I ran the lines in terminal:
+I ran the following lines in terminal:
 
 First uninstall gem
 
-cd 
-gem list --local | grep cocoapods | awk '{print $1}' | xargs sudo gem uninstall
+appleM1@appleM1-MacBook-Pro ~ % cd
+
+appleM1@appleM1-MacBook-Pro ~ % gem list --local | grep cocoapods | awk '{print $1}' | xargs sudo gem uninstall
 
 Then install cocoapods using brew, so I used:
 
@@ -25,9 +33,10 @@ sudo gem install ffi
 
 Done!!!
 
-Following paste fo my terminal session:
+Below I pasted a copy of what I ran in my terminal session:
 
-flutter doctor -v
+appleM1@appleM1-MacBook-Pro ~ % flutter doctor -v
+
 [✓] Flutter (Channel stable, 2.5.3, on macOS 11.6 20G165 darwin-arm, locale en-US)
     • Flutter version 2.5.3 at /Users/appleM1/Devel/flutter
     • Upstream repository https://github.com/flutter/flutter.git
@@ -82,7 +91,9 @@ flutter doctor -v
     • Chrome (web)                • chrome                               • web-javascript • Google Chrome 95.0.4638.54
 
 • No issues found!
-appleM1@appleM1s-MacBook-Pro ~ % gem list --local | grep cocoapods                    
+
+appleM1@appleM1-MacBook-Pro ~ % gem list --local | grep cocoapods
+
 cocoapods (1.11.2)
 cocoapods-core (1.11.2)
 cocoapods-deintegrate (1.0.5)
@@ -91,9 +102,13 @@ cocoapods-plugins (1.0.0)
 cocoapods-search (1.0.1)
 cocoapods-trunk (1.6.0)
 cocoapods-try (1.2.0)
-appleM1@appleM1s-MacBook-Pro ~ % brew uninstall --ignore-dependencies ruby
+
+appleM1@appleM1-MacBook-Pro ~ % brew uninstall --ignore-dependencies ruby
+
 Error: No available formula or cask with the name "ruby". Did you mean jruby or mruby?
+
 appleM1@appleM1s-MacBook-Pro ~ % gem list --local | grep cocoapods | awk '{print $1}' | xargs sudo gem uninstall
+
 Password:
 Removing pod
 Removing sandbox-pod
@@ -105,7 +120,9 @@ Successfully uninstalled cocoapods-plugins-1.0.0
 Successfully uninstalled cocoapods-downloader-1.5.1
 Successfully uninstalled cocoapods-deintegrate-1.0.5
 Successfully uninstalled cocoapods-core-1.11.2
-appleM1@appleM1s-MacBook-Pro ~ % brew install cocoapods
+
+appleM1@appleM1-MacBook-Pro ~ % brew install cocoapods
+
 Updating Homebrew...
 ==> Auto-updated Homebrew!
 Updated 1 tap (homebrew/core).
@@ -286,23 +303,26 @@ Removing: /opt/homebrew/Cellar/nghttp2/1.44.0... (23 files, 2.8MB)
 Removing: /opt/homebrew/Cellar/node/16.8.0... (2,409 files, 47MB)
 ==> Checking for dependents of upgraded formulae...
 ==> No broken dependents found!
-appleM1@appleM1s-MacBook-Pro ~ % 
 
-appleM1@appleM1s-MacBook-Pro ~ % gem list --local | grep cocoapods | awk '{print $1}'                           
+appleM1@appleM1-MacBook-Pro ~ % 
 
-appleM1@appleM1s-MacBook-Pro ~ % pod install
+appleM1@appleM1-MacBook-Pro ~ % gem list --local | grep cocoapods | awk '{print $1}'                           
+
+appleM1@appleM1-MacBook-Pro ~ % pod install
+
 [!] No `Podfile' found in the project directory.
 
-appleM1@appleM1s-MacBook-Pro ~ % sudo gem install ffi
+appleM1@appleM1-MacBook-Pro ~ % sudo gem install ffi
+
 Building native extensions. This could take a while...
 Successfully installed ffi-1.15.4
 Parsing documentation for ffi-1.15.4
 Done installing documentation for ffi after 1 seconds
 1 gem installed
 
-appleM1@appleM1s-MacBook-Pro ~ % gem list --local | grep cocoapods | awk '{print $1}'
+appleM1@appleM1-MacBook-Pro ~ % gem list --local | grep cocoapods | awk '{print $1}'
 
-appleM1@appleM1s-MacBook-Pro ~ % gem list
+appleM1@appleM1-MacBook-Pro ~ % gem list
 
 *** LOCAL GEMS ***
 
@@ -379,20 +399,24 @@ xcodeproj (1.21.0)
 xmlrpc (0.3.0)
 zeitwerk (2.4.2)
 zlib (default: 1.0.0)
-appleM1@appleM1s-MacBook-Pro ~ % 
 
-appleM1@appleM1s-MacBook-Pro ~ % cd Devel/flutter.apps/shop 
+appleM1@appleM1-MacBook-Pro ~ % 
 
-appleM1@appleM1s-MacBook-Pro shop % flutter devices 
+appleM1@appleM1-MacBook-Pro ~ % cd Devel/flutter.apps/shop 
+
+appleM1@appleM1-MacBook-Pro shop % flutter devices 
+
 3 connected devices:
-
 sdk gphone64 arm64 (mobile) • emulator-5554                        • android-arm64  • Android 12 (API 31) (emulator)
 iPhone 13 (mobile)          • 470ACB9E-CA75-4069-93E4-2F8ED4605650 • ios            • com.apple.CoreSimulator.SimRuntime.iOS-15-0 (simulator)
 Chrome (web)                • chrome                               • web-javascript • Google Chrome 95.0.4638.54
-appleM1@appleM1s-MacBook-Pro shop % flutter -d 470ACB9E-CA75-4069-93E4-2F8ED4605650 run
+
+
+appleM1@appleM1-MacBook-Pro shop % flutter -d 470ACB9E-CA75-4069-93E4-2F8ED4605650 run
+
 Launching lib/main.dart on iPhone 13 in debug mode...
 Running pod install...                                             699ms
-Running Xcode build...                                                  
+Running Xcode build...
  └─Compiling, linking and signing...                         3.7s
 Xcode build done.                                           26.0s
 Syncing files to device iPhone 13...                               266ms
@@ -411,4 +435,6 @@ An Observatory debugger and profiler on iPhone 13 is available at: http://127.0.
 The Flutter DevTools debugger and profiler on iPhone 13 is available at: http://127.0.0.1:9102?uri=http://127.0.0.1:54075/14sLzZDZbrk=/
 
 Application finished.
+
 appleM1@appleM1s-MacBook-Pro shop % 
+</pre>
